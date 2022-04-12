@@ -338,3 +338,13 @@ footer ul li {
     padding: 0;
     position: absolute;
 }
+
+.slide-right-group > * {
+    opacity:1;
+    transition:all 0.7s cubic-bezier(.25, .8, .25, 1);
+}
+
+.slide-right-group.hidden > * {
+    transform:translateX(-70px);
+    opacity:0;
+}

@@ -7,6 +7,7 @@ Table of contents
 - Back-to-top button
 - section acive state
 - smoothScrollTo function for smooth scrolling accross different browsers
+- isInView function to check if the passed element is currently within the range of focus in the viewport
 
 */
 
@@ -86,10 +87,12 @@ function init() {
     // section acive state
     window.addEventListener('scroll', function () {
         for (let element of document.querySelectorAll('main section, header')) {
-            element.querySelector('.section-content').getBoundingClientRect().top < document.documentElement.clientHeight*2/3 &&
-                element.querySelector('.section-content').getBoundingClientRect().bottom > document.documentElement.clientHeight/3 ?
-                navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.add('active') :
+            if (isInView(element)) {
+                slider(element.querySelector('.slide-right-group, .slide-left-group'));
+                navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.add('active');
+            } else {
                 navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.remove('active');
+            }
         }
     });
 }
@@ -117,9 +120,30 @@ function smoothScrollTo(destination) {
             currentPos = currentPos < destination ? currentPos + stepLength : currentPos - stepLength;
             window.scrollTo({ top: currentPos });
             prevTimestamp = timestamp;
-            
+
             if (Math.floor(remainingDistance) >= 1) window.requestAnimationFrame(step);
         }
         window.requestAnimationFrame(step);
     }
+}
+
+/**
+* @description return true if the passed element is currently within the range of focus in the viewport
+* @param {DOM node} element - The element to check it's position relative to viewport
+*/
+
+function isInView(element) {
+    return element.querySelector('.section-content').getBoundingClientRect().top < document.documentElement.clientHeight * 2 / 3 &&
+        element.querySelector('.section-content').getBoundingClientRect().bottom > document.documentElement.clientHeight / 3
+}
+
+function slider(slideGroup) {
+    if (slideGroup && slideGroup.classList.contains('hidden')) {
+        slideGroup.classList.remove('hidden');
+        let delay = 0;
+        for (let element of slideGroup.children) {
+            element.style["transition-delay"] = 0.1 * ++delay + "s";
+        }
+    }
+
 }
