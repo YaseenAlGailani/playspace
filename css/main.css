@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Poppins&display=swap');
-@import url('./css/normalize.css');
-@import url('./css/navigation.css');
+@import url('./normalize.css');
+@import url('./navigation.css');
 
 * {
     box-sizing: border-box;
