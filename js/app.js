@@ -12,7 +12,7 @@ Table of contents
 */
 
 
-document.addEventListener('DOMContentLoaded', init);
+window.addEventListener('load', init);
 
 function init() {
 
@@ -70,7 +70,7 @@ function init() {
 
             let scrollPos = document.querySelector(a.href.match(/#(.)*/g)[0]).getBoundingClientRect().top + window.scrollY;
             smoothScrollTo(scrollPos);
-        })
+        });
     }
 
 
@@ -85,11 +85,11 @@ function init() {
 
 
     // section acive state
+    activeSectionHandler(header, navList);
     window.addEventListener('scroll', function () {
         for (let element of document.querySelectorAll('main section, header')) {
             if (isInView(element)) {
-                slider(element.querySelector('.slide-right-group, .slide-left-group'));
-                navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.add('active');
+                activeSectionHandler(element, navList);
             } else {
                 navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.remove('active');
             }
@@ -133,11 +133,11 @@ function smoothScrollTo(destination) {
 */
 
 function isInView(element) {
-    return element.querySelector('.section-content').getBoundingClientRect().top < document.documentElement.clientHeight * 2 / 3 &&
+    return element.querySelector('.section-content').getBoundingClientRect().top < document.documentElement.clientHeight * 3 / 4 &&
         element.querySelector('.section-content').getBoundingClientRect().bottom > document.documentElement.clientHeight / 3
 }
 
-function slider(slideGroup) {
+function slideHandler(slideGroup) {
     if (slideGroup && slideGroup.classList.contains('hidden')) {
         slideGroup.classList.remove('hidden');
         let delay = 0;
@@ -146,4 +146,11 @@ function slider(slideGroup) {
         }
     }
 
+}
+
+function activeSectionHandler(element, navList){
+    for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')){
+        slideHandler(child);
+    }
+    navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.add('active');
 }
