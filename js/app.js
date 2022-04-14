@@ -11,7 +11,6 @@ Table of contents
 
 */
 
-
 window.addEventListener('load', init);
 
 function init() {
@@ -72,7 +71,6 @@ function init() {
             smoothScrollTo(scrollPos);
         });
     }
-
 
     // Back-to-top button
     backToTop.addEventListener('click', function () {
@@ -139,13 +137,17 @@ function isInView(element) {
 
 function slideHandler(slideGroup) {
     if (slideGroup && slideGroup.classList.contains('hidden')) {
-        slideGroup.classList.remove('hidden');
         let delay = 0;
         for (let element of slideGroup.children) {
-            element.style["transition-delay"] = 0.1 * ++delay + "s";
+            element.classList.add('slide-transition');
+            element.style['transition-delay'] = 0.1 * ++delay + "s";
+            element.addEventListener('transitionend', function(){
+                this.classList.remove('slide-transition');
+                this.style['transition-delay'] = null;
+            })
         }
+        slideGroup.classList.remove('hidden');
     }
-
 }
 
 function activeSectionHandler(element, navList){
