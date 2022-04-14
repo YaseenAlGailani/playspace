@@ -1,14 +1,6 @@
 /*
-Table of contents
-
-- Mobile navigation expand/collapse functionality
-- nav to appear on scrolling up
-- Scroll to section 
-- Back-to-top button
-- section acive state
-- smoothScrollTo function for smooth scrolling accross different browsers
-- isInView function to check if the passed element is currently within the range of focus in the viewport
-
+Description: This file contains scripts for building navigation, handling transitions and animations, scrolling functionalities, and others
+Author: Yaseen AlGailani
 */
 
 window.addEventListener('load', init);
@@ -21,9 +13,12 @@ function init() {
     const navList = document.getElementById('nav-list');
     const backdrop = document.getElementById('backdrop');
     const backToTop = document.getElementById('back-to-top');
-    const header = document.getElementById('about');
+    const header = document.getElementById('about-playspace');
     let prevScrollY = 0;
 
+    buildNav(navList);
+
+    // toggle navigation list in mobile view
     navListToggle.addEventListener('click', function () {
         navListToggle.classList.toggle('expanded')
 
@@ -95,11 +90,28 @@ function init() {
     });
 }
 
-/**
-* @description apply smooth scrolling across browsers with native support and others without.
-* @param {number} destination - the scroll-to postion.
-*/
+//return true if the passed element is currently within the range of focus in the viewport
+function isInView(element) {
+    return element.querySelector('.section-content').getBoundingClientRect().top < document.documentElement.clientHeight * 3 / 4 &&
+        element.querySelector('.section-content').getBoundingClientRect().bottom > document.documentElement.clientHeight / 3
+}
 
+//build navigation list based on existing sections
+function buildNav(navList) {
+    let fragment = document.createDocumentFragment();
+    document.querySelectorAll('header, main section').forEach((element) => {
+        let li = document.createElement('li');
+        li.innerHTML = `<a href="#${element.id}">${parseID(element.id)}</a>`;
+        fragment.append(li);
+    });
+    navList.appendChild(fragment);
+}
+
+function parseID(id) {
+    return id.split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+// Apply smooth scrolling across browsers with native support and others without
 function smoothScrollTo(destination) {
     //check if browser supports smooth scroll
     if (window.CSS.supports('scroll-behavior', 'smooth')) {
@@ -125,34 +137,25 @@ function smoothScrollTo(destination) {
     }
 }
 
-/**
-* @description return true if the passed element is currently within the range of focus in the viewport
-* @param {DOM node} element - The element to check it's position relative to viewport
-*/
-
-function isInView(element) {
-    return element.querySelector('.section-content').getBoundingClientRect().top < document.documentElement.clientHeight * 3 / 4 &&
-        element.querySelector('.section-content').getBoundingClientRect().bottom > document.documentElement.clientHeight / 3
+function activeSectionHandler(element, navList) {
+    for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')) {
+        slideHandler(child);
+    }
+    navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.add('active');
 }
 
+// handle section slide transitions
 function slideHandler(slideGroup) {
     if (slideGroup && slideGroup.classList.contains('hidden')) {
         let delay = 0;
         for (let element of slideGroup.children) {
             element.classList.add('slide-transition');
             element.style['transition-delay'] = 0.1 * ++delay + "s";
-            element.addEventListener('transitionend', function(){
+            element.addEventListener('transitionend', function () {
                 this.classList.remove('slide-transition');
                 this.style['transition-delay'] = null;
-            })
+            });
         }
         slideGroup.classList.remove('hidden');
     }
-}
-
-function activeSectionHandler(element, navList){
-    for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')){
-        slideHandler(child);
-    }
-    navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.add('active');
 }

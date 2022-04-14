@@ -344,7 +344,7 @@ footer ul li {
     opacity:1;
     transition-property: all;
     transition-duration: 0.7s !important;
-    transition-timing-function: cubic-bezier(.25, .8, .25, 1);
+    transition-timing-function: cubic-bezier(.25, .8, .25, 1) !important;
 }
 
 .slide-right-group > *, 
