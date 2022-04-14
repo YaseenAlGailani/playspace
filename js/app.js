@@ -36,7 +36,6 @@ function init() {
         }
         backdrop.addEventListener('transitionend', function () {
             backdrop.classList.remove('transition');
-            console.log('hi');
         });
     });
 
