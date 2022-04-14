@@ -1,8 +1,17 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.3.6,
+* Autoprefixer: v10.3.1
+* Browsers: last 4 version
+*/
+
 /* ----------------------
         Navigation
 ---------------------- */
 
 .transition {
+    -webkit-transition: all 0.5s cubic-bezier(.38, .01, .11, 1);
+    -o-transition: all 0.5s cubic-bezier(.38, .01, .11, 1);
     transition: all 0.5s cubic-bezier(.38, .01, .11, 1);
 }
 
@@ -11,8 +20,14 @@
     z-index: 400;
     background-color: #fff;
     left: 50%;
-    transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+        -ms-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+    -webkit-transition: -webkit-transform 0.5s cubic-bezier(.25, .8, .25, 1);
+    transition: -webkit-transform 0.5s cubic-bezier(.25, .8, .25, 1);
+    -o-transition: transform 0.5s cubic-bezier(.25, .8, .25, 1);
     transition: transform 0.5s cubic-bezier(.25, .8, .25, 1);
+    transition: transform 0.5s cubic-bezier(.25, .8, .25, 1), -webkit-transform 0.5s cubic-bezier(.25, .8, .25, 1);
 }
 
 #nav.fixed {
@@ -20,7 +35,9 @@
     border: solid 1px #eaeaea;
     border-radius: 16px;
     top: -50px;
-    transform: translate(-50%, 58px);
+    -webkit-transform: translate(-50%, 58px);
+        -ms-transform: translate(-50%, 58px);
+            transform: translate(-50%, 58px);
 }
 
 #backdrop {
@@ -84,6 +101,8 @@
     bottom: 0;
     left: 0;
     border-radius: 2px;
+    -webkit-transition: all 0.2s cubic-bezier(.25, .8, .25, 1);
+    -o-transition: all 0.2s cubic-bezier(.25, .8, .25, 1);
     transition: all 0.2s cubic-bezier(.25, .8, .25, 1);
 }
 
@@ -115,9 +134,15 @@
 ----------------------- */
 
 #nav-heading {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 #nav-list-toggle {
@@ -136,6 +161,8 @@
     display: block;
     height: 4px;
     position: absolute;
+    -webkit-transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    -o-transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
     width: 40px;
 }
@@ -158,7 +185,11 @@
 
 #nav-list-toggle.expanded {
     height: 30px;
-    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+            transform: rotate(180deg);
+    -webkit-transition: all 0.7s cubic-bezier(.25, .8, .25, 1);
+    -o-transition: all 0.7s cubic-bezier(.25, .8, .25, 1);
     transition: all 0.7s cubic-bezier(.25, .8, .25, 1);
     width: 58px;
 }
@@ -166,8 +197,12 @@
 #nav-list-toggle.expanded .bar-1 {
     left: 13px;
     top: -2px;
-    transform-origin: left;
-    transform: rotate(45deg);
+    -webkit-transform-origin: left;
+        -ms-transform-origin: left;
+            transform-origin: left;
+    -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
     width: 40px;
     background-color: #e30935;
 }
@@ -179,8 +214,12 @@
 #nav-list-toggle.expanded .bar-3 {
     left: 13px;
     top: 26px;
-    transform-origin: left;
-    transform: rotate(-45deg);
+    -webkit-transform-origin: left;
+        -ms-transform-origin: left;
+            transform-origin: left;
+    -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
     width: 40px;
     background-color: #e30935;
 }
@@ -188,16 +227,25 @@
 @media screen and (min-width:851px) {
 
     #nav {
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
         margin: 0;
 
     }
 
     #nav-heading {
-        flex: 2 2;
+        -webkit-box-flex: 2;
+            -ms-flex: 2 2;
+                flex: 2 2;
     }
 
     #nav-list-toggle {
@@ -208,9 +256,15 @@
     #nav-list.hidden {
         list-style: none;
         padding-left: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
-        justify-content: space-between;
-        flex: 3 3;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+        -webkit-box-flex: 3;
+            -ms-flex: 3 3;
+                flex: 3 3;
         margin: 0;
         min-width: auto;
     }
