@@ -2,6 +2,56 @@
 @import url('./normalize.css');
 @import url('./navigation.css');
 
+
+/* ------------------
+        Utils 
+-------------------- */
+
+.sr-only {
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+}
+
+.slide-transition{
+    opacity:1;
+    transition-property: all;
+    transition-duration: 0.7s !important;
+    transition-timing-function: cubic-bezier(.25, .8, .25, 1) !important;
+}
+
+.slide-right-group > *, 
+.slide-left-group > *, 
+.slide-up-group > * {
+    opacity:1;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(.25, .8, .25, 1);
+}
+
+.slide-right-group.hidden > * {
+    transform:translateX(-70px) !important;
+    opacity:0;
+}
+
+.slide-left-group.hidden > * {
+    transform:translateX(70px) !important;
+    opacity:0;
+}
+
+.slide-up-group.hidden > * {
+    transform:translateY(70px) !important;
+    opacity:0;
+}
+
+/* ------------------
+        Generic 
+-------------------- */
+
 * {
     box-sizing: border-box;
 }
@@ -325,47 +375,3 @@ footer ul li {
 }
 
 
-/* ------------------
-        Utils 
--------------------- */
-
-.sr-only {
-    clip: rect(1px, 1px, 1px, 1px);
-    clip-path: inset(50%);
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-}
-
-.slide-transition{
-    opacity:1;
-    transition-property: all;
-    transition-duration: 0.7s !important;
-    transition-timing-function: cubic-bezier(.25, .8, .25, 1) !important;
-}
-
-.slide-right-group > *, 
-.slide-left-group > *, 
-.slide-up-group > * {
-    opacity:1;
-    transition-property: all;
-    transition-timing-function: cubic-bezier(.25, .8, .25, 1);
-}
-
-.slide-right-group.hidden > * {
-    transform:translateX(-70px) !important;
-    opacity:0;
-}
-
-.slide-left-group.hidden > * {
-    transform:translateX(70px) !important;
-    opacity:0;
-}
-
-.slide-up-group.hidden > * {
-    transform:translateY(70px) !important;
-    opacity:0;
-}
