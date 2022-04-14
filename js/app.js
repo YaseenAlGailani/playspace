@@ -1,5 +1,5 @@
 /*
-Description: This file contains scripts for building navigation, handling transitions and animations, scrolling functionalities, and others
+Description: This file contains scripts for building navigation, handling transitions and animations, scrolling functionalities amongst other smaller functions.
 Author: Yaseen AlGailani
 */
 
@@ -120,7 +120,7 @@ function smoothScrollTo(destination) {
         const pace = 200;
         let prevTimestamp = performance.now();
         let currentPos = window.scrollY;
-        // @param: timestamp is a "DOMHightResTimeStamp", check on MDN
+       
         function step(timestamp) {
             let remainingDistance = currentPos < destination ? destination - currentPos : currentPos - destination;
             let stepDuration = timestamp - prevTimestamp;
@@ -137,6 +137,7 @@ function smoothScrollTo(destination) {
     }
 }
 
+// handle kickstart slide transitions update navigation status
 function activeSectionHandler(element, navList) {
     for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')) {
         slideHandler(child);
