@@ -61,7 +61,7 @@ function init() {
             navList.classList.add('hidden');
             navListToggle.classList.remove('expanded');
 
-            let scrollPos = document.querySelector(a.href.match(/#(.)*/g)[0]).getBoundingClientRect().top + window.scrollY - nav.clientHeight;
+            let scrollPos = document.querySelector(a.href.match(/#(.)*/g)[0]).getBoundingClientRect().top + window.scrollY - navList.clientHeight;
             smoothScrollTo(scrollPos);
         });
     }
