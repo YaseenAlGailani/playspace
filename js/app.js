@@ -61,7 +61,7 @@ function init() {
             navList.classList.add('hidden');
             navListToggle.classList.remove('expanded');
 
-            let scrollPos = document.querySelector(a.href.match(/#(.)*/g)[0]).getBoundingClientRect().top + window.scrollY;
+            let scrollPos = document.querySelector(a.href.match(/#(.)*/g)[0]).getBoundingClientRect().top + window.scrollY - nav.clientHeight;
             smoothScrollTo(scrollPos);
         });
     }
@@ -106,6 +106,7 @@ function buildNav(navList) {
     let fragment = document.createDocumentFragment();
     document.querySelectorAll('header, main section').forEach((element) => {
         let li = document.createElement('li');
+        console.log('id: ' + element.id)
         li.innerHTML = `<a href="#${element.id}">${parseID(element.id)}</a>`;
         fragment.append(li);
     });
