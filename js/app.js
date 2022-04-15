@@ -89,7 +89,7 @@ function checkActiveSection(header, navList) {
             activeSectionHandler(element, navList);
         }
     }
-    if (window.scrollY <= 0) {
+    if (window.scrollY <= header.clientHeight/2) {
         activeSectionHandler(header, navList);
     }
 }
@@ -97,8 +97,9 @@ function checkActiveSection(header, navList) {
 //return true if the passed element is currently within the range of focus in the viewport
 function isInView(element) {
     let elemMidPoint = element.getBoundingClientRect().top + (element.clientHeight / 2);
-    return elemMidPoint < document.documentElement.clientHeight * 5 / 6 &&
-        elemMidPoint > document.documentElement.clientHeight / 6
+    let html = document.documentElement;
+    return (elemMidPoint < html.clientHeight * 5 / 6 &&
+        elemMidPoint > html.clientHeight / 6) || (element.getBoundingClientRect().top <= html.clientHeight/3 && element.getBoundingClientRect().bottom >= html.clientHeight);
 }
 
 //build navigation list based on existing sections
