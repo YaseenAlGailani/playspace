@@ -75,24 +75,30 @@ function init() {
         backToTop.hidden = window.scrollY < document.documentElement.clientHeight;
     });
 
-
-    // section acive state
-    activeSectionHandler(header, navList);
-    window.addEventListener('scroll', function () {
-        for (let element of document.querySelectorAll('main section, header')) {
-            if (isInView(element)) {
-                activeSectionHandler(element, navList);
-            } else {
-                navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.remove('active');
-            }
-        }
+    // trigger active section check
+    checkActiveSection(header, navList);
+    window.addEventListener('scroll', () => {
+        checkActiveSection(header, navList)
     });
+}
+
+// find active section
+function checkActiveSection(header, navList) {
+    for (let element of document.querySelectorAll('main section, header')) {
+        if (isInView(element)) {
+            activeSectionHandler(element, navList);
+        }
+    }
+    if (window.scrollY <= 0) {
+        activeSectionHandler(header, navList);
+    }
 }
 
 //return true if the passed element is currently within the range of focus in the viewport
 function isInView(element) {
-    return element.querySelector('.section-content').getBoundingClientRect().top < document.documentElement.clientHeight * 3 / 4 &&
-        element.querySelector('.section-content').getBoundingClientRect().bottom > document.documentElement.clientHeight / 3
+    let elemMidPoint = element.getBoundingClientRect().top + (element.clientHeight / 2);
+    return elemMidPoint < document.documentElement.clientHeight * 5 / 6 &&
+        elemMidPoint > document.documentElement.clientHeight / 6
 }
 
 //build navigation list based on existing sections
@@ -119,7 +125,7 @@ function smoothScrollTo(destination) {
         const pace = 200;
         let prevTimestamp = performance.now();
         let currentPos = window.scrollY;
-       
+
         function step(timestamp) {
             let remainingDistance = currentPos < destination ? destination - currentPos : currentPos - destination;
             let stepDuration = timestamp - prevTimestamp;
@@ -141,6 +147,7 @@ function activeSectionHandler(element, navList) {
     for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')) {
         slideHandler(child);
     }
+    navList.querySelectorAll('li').forEach((li) => { li.classList.remove('active') });
     navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.add('active');
 }
 
