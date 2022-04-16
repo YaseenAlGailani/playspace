@@ -89,7 +89,7 @@ function checkActiveSection(header, navList) {
             activeSectionHandler(element, navList);
         }
     }
-    if (window.scrollY <= header.clientHeight/2) {
+    if (window.scrollY <= header.clientHeight / 2) {
         activeSectionHandler(header, navList);
     }
 }
@@ -99,7 +99,7 @@ function isInView(element) {
     let elemMidPoint = element.getBoundingClientRect().top + (element.clientHeight / 2);
     let html = document.documentElement;
     return (elemMidPoint < html.clientHeight * 5 / 6 &&
-        elemMidPoint > html.clientHeight / 6) || (element.getBoundingClientRect().top <= html.clientHeight/3 && element.getBoundingClientRect().bottom >= html.clientHeight);
+        elemMidPoint > html.clientHeight / 6) || (element.getBoundingClientRect().top <= html.clientHeight / 3 && element.getBoundingClientRect().bottom >= html.clientHeight);
 }
 
 //build navigation list based on existing sections
@@ -107,8 +107,7 @@ function buildNav(navList) {
     let fragment = document.createDocumentFragment();
     document.querySelectorAll('header, main section').forEach((element) => {
         let li = document.createElement('li');
-        console.log('id: ' + element.id)
-        li.innerHTML = `<a href="#${element.id}">${parseID(element.id)}</a>`;
+        li.innerHTML = `<a>${parseID(element.id)}</a>`;
         fragment.append(li);
     });
     navList.appendChild(fragment);
