@@ -53,7 +53,7 @@ function init() {
         prevScrollY = scrollY;
     });
 
-    // Scroll to section  - assign an event lister
+    // Scroll to section  - assign an event lister to each nav item
     for (let a of navList.querySelectorAll('a')) {
         a.addEventListener('click', (e) => {
             let scrollPos = document.querySelector(a.href.match(/#(.)*/g)[0]).getBoundingClientRect().top + window.scrollY - navList.clientHeight;
