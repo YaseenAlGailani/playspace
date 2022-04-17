@@ -53,16 +53,11 @@ function init() {
         prevScrollY = scrollY;
     });
 
-    // Scroll to section 
+    // Scroll to section  - assign an event lister
     for (let a of navList.querySelectorAll('a')) {
-        a.addEventListener('click', function (e) {
-            e.preventDefault();
-            backdrop.classList.add('hidden');
-            navList.classList.add('hidden');
-            navListToggle.classList.remove('expanded');
-
+        a.addEventListener('click', (e) => {
             let scrollPos = document.querySelector(a.href.match(/#(.)*/g)[0]).getBoundingClientRect().top + window.scrollY - navList.clientHeight;
-            smoothScrollTo(scrollPos);
+            scrollToSection(e, scrollPos);
         });
     }
 
@@ -76,21 +71,50 @@ function init() {
     });
 
     // trigger active section check
-    checkActiveSection(header, navList);
+    checkActiveSection();
     window.addEventListener('scroll', () => {
         checkActiveSection(header, navList)
     });
-}
 
-// find active section
-function checkActiveSection(header, navList) {
-    for (let element of document.querySelectorAll('main section, header')) {
-        if (isInView(element)) {
-            activeSectionHandler(element, navList);
+    function scrollToSection(e, scrollPos) {
+        e.preventDefault();
+        backdrop.classList.add('hidden');
+        navList.classList.add('hidden');
+        navListToggle.classList.remove('expanded');
+
+        smoothScrollTo(scrollPos);
+    }
+
+    // find active section
+    function checkActiveSection() {
+        for (let element of document.querySelectorAll('main section, header')) {
+            if (isInView(element)) {
+                activeSectionHandler(element, navList);
+            }
+        }
+        if (window.scrollY <= header.clientHeight / 2) {
+            activeSectionHandler(header, navList);
         }
     }
-    if (window.scrollY <= header.clientHeight / 2) {
-        activeSectionHandler(header, navList);
+
+    // kickstart slide transitions update navigation status
+    function activeSectionHandler(element) {
+        for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')) {
+            slideHandler(child);
+        }
+        navList.querySelectorAll('li').forEach((li) => { li.classList.remove('active') });
+        navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.add('active');
+    }
+
+    //build navigation list based on existing sections
+    function buildNav() {
+        let fragment = document.createDocumentFragment();
+        document.querySelectorAll('header, main section').forEach((element) => {
+            let li = document.createElement('li');
+            li.innerHTML = `<a href="#${element.id}">${parseKebabCase(element.id)}</a>`;
+            fragment.append(li);
+        });
+        navList.appendChild(fragment);
     }
 }
 
@@ -102,18 +126,7 @@ function isInView(element) {
         elemMidPoint > html.clientHeight / 6) || (element.getBoundingClientRect().top <= html.clientHeight / 3 && element.getBoundingClientRect().bottom >= html.clientHeight);
 }
 
-//build navigation list based on existing sections
-function buildNav(navList) {
-    let fragment = document.createDocumentFragment();
-    document.querySelectorAll('header, main section').forEach((element) => {
-        let li = document.createElement('li');
-        li.innerHTML = `<a>${parseID(element.id)}</a>`;
-        fragment.append(li);
-    });
-    navList.appendChild(fragment);
-}
-
-function parseID(id) {
+function parseKebabCase(id) {
     return id.split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
@@ -141,15 +154,6 @@ function smoothScrollTo(destination) {
         }
         window.requestAnimationFrame(step);
     }
-}
-
-// handle kickstart slide transitions update navigation status
-function activeSectionHandler(element, navList) {
-    for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')) {
-        slideHandler(child);
-    }
-    navList.querySelectorAll('li').forEach((li) => { li.classList.remove('active') });
-    navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.add('active');
 }
 
 // handle section slide transitions
