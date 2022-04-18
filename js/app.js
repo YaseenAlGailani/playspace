@@ -56,7 +56,7 @@ function init() {
     // Scroll to section  - assign an event lister to each nav item
     for (let a of navList.querySelectorAll('a')) {
         a.addEventListener('click', (e) => {
-            let scrollPos = document.querySelector(a.href.match(/#(.)*/g)[0]).getBoundingClientRect().top + window.scrollY - navList.clientHeight;
+            let scrollPos = document.querySelector('#' + a.dataset.ref).getBoundingClientRect().top + window.scrollY - navList.clientHeight;
             scrollToSection(e, scrollPos);
         });
     }
@@ -88,8 +88,9 @@ function init() {
     // find active section
     function checkActiveSection() {
         for (let element of document.querySelectorAll('main section, header')) {
+            element.classList.remove('active');
             if (isInView(element)) {
-                activeSectionHandler(element, navList);
+                activeSectionHandler(element);
             }
         }
         if (window.scrollY <= header.clientHeight / 2) {
@@ -99,11 +100,12 @@ function init() {
 
     // kickstart slide transitions update navigation status
     function activeSectionHandler(element) {
+        element.classList.add('active');
         for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')) {
             slideHandler(child);
         }
         navList.querySelectorAll('li').forEach((li) => { li.classList.remove('active') });
-        navList.querySelector('a[href="#' + element.id + '"]').parentElement.classList.add('active');
+        navList.querySelector('a[data-ref="' + element.id + '"]').parentElement.classList.add('active');
     }
 
     //build navigation list based on existing sections
@@ -111,7 +113,7 @@ function init() {
         let fragment = document.createDocumentFragment();
         document.querySelectorAll('header, main section').forEach((element) => {
             let li = document.createElement('li');
-            li.innerHTML = `<a href="#${element.id}">${parseKebabCase(element.id)}</a>`;
+            li.innerHTML = `<a data-ref="${element.id}">${parseKebabCase(element.id)}</a>`;
             fragment.append(li);
         });
         navList.appendChild(fragment);
