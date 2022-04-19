@@ -14,6 +14,7 @@ function init() {
     const backdrop = document.getElementById('backdrop');
     const backToTop = document.getElementById('back-to-top');
     const header = document.getElementById('about-playspace');
+    const allSections = document.querySelectorAll('main section, header');
     let prevScrollY = 0;
 
     buildNav(navList);
@@ -87,19 +88,19 @@ function init() {
 
     // find active section
     function checkActiveSection() {
-        for (let element of document.querySelectorAll('main section, header')) {
-            element.classList.remove('active');
+        for (let element of allSections) {
             if (isInView(element)) {
                 activeSectionHandler(element);
             }
         }
-        if (window.scrollY <= header.clientHeight / 2) {
+        if (window.scrollY <= header.clientHeight / 3) {
             activeSectionHandler(header, navList);
         }
     }
 
     // kickstart slide transitions update navigation status
     function activeSectionHandler(element) {
+        allSections.forEach((section) => { section.classList.remove('active') });
         element.classList.add('active');
         for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')) {
             slideHandler(child);
