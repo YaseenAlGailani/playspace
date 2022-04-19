@@ -18,10 +18,9 @@ function init() {
 
     buildNav();
 
-    // toggle navigation list in mobile view
-    navListToggle.addEventListener('click', toggleNavList);
-
-
+    /**
+     * @description toggle navigation list in mobile view
+     */
     function toggleNavList() {
         navListToggle.classList.toggle('expanded')
         if (backdrop.classList.contains('hidden')) {
@@ -40,10 +39,11 @@ function init() {
             backdrop.classList.remove('transition');
         });
     }
-
-    // nav to appear on scrolling up
-    window.addEventListener('scroll', fixedNavHandler);
-
+    navListToggle.addEventListener('click', toggleNavList);
+    
+    /**
+     * @description nav to appear on scrolling up
+     */ 
     function fixedNavHandler() {
         if (window.scrollY < prevScrollY && window.scrollY > 50) {
             if (!nav.classList.contains('fixed')) {
@@ -56,7 +56,8 @@ function init() {
         }
         prevScrollY = scrollY;
     }
-
+    window.addEventListener('scroll', fixedNavHandler);
+    
     // Scroll to section  - assign an event lister to each nav item
     for (let a of navList.querySelectorAll('a')) {
         a.addEventListener('click', (e) => {
@@ -74,7 +75,9 @@ function init() {
         backToTop.hidden = window.scrollY < document.documentElement.clientHeight;
     });
 
-    // trigger active section check
+    /**
+     * @description trigger active section check
+     */
     findActiveSection();
     window.addEventListener('scroll', () => {
         findActiveSection(header, navList)
@@ -89,7 +92,9 @@ function init() {
         smoothScrollTo(scrollPos);
     }
 
-    // find active section
+    /**
+     * @description find active section
+     */
     function findActiveSection() {
         for (let element of allSections) {
             if (isInView(element)) {
@@ -101,30 +106,35 @@ function init() {
         }
     }
 
-    // kickstart slide transitions update navigation status
+    /**
+     * @description kickstart slide transitions update navigation status
+     * @param {node} element 
+     */
     function activeSectionHandler(element) {
         let navItem = navList.querySelector('a[data-ref="' + element.id + '"]').parentElement;
-        
+
         if (!element.classList.contains('active')) {
             allSections.forEach((section) => {
                 section.classList.remove('active')
             });
             element.classList.add('active');
         }
-        
+
         if (!navItem.classList.contains('active')) {
             navList.querySelectorAll('li').forEach((li) => {
                 li.classList.remove('active')
             });
             navItem.classList.add('active');
         }
-        
+
         for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')) {
             slideHandler(child);
         }
     }
 
-    //build navigation list based on existing sections
+    /** 
+     * @description build navigation list based on existing sections
+     */
     function buildNav() {
         let fragment = document.createDocumentFragment();
         document.querySelectorAll('header, main section').forEach((element) => {
@@ -135,8 +145,11 @@ function init() {
         navList.appendChild(fragment);
     }
 }
-
-//return true if the passed element is currently within the range of focus in the viewport
+/**
+ * @description determins if element is within range of focus of the viewport
+ * @param {node} element 
+ * @returns {boolean}
+ */
 function isInView(element) {
     let elemMidPoint = element.getBoundingClientRect().top + (element.clientHeight / 2);
     let html = document.documentElement;
@@ -148,7 +161,11 @@ function parseKebabCase(id) {
     return id.split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
-// Apply smooth scrolling across browsers with native support and others without
+/**
+ * @description Applies smooth scrolling across browsers with native support and others without
+ * @param {number} destination 
+ */
+
 function smoothScrollTo(destination) {
     //check if browser supports smooth scroll
     if (window.CSS.supports('scroll-behavior', 'smooth')) {
@@ -174,7 +191,10 @@ function smoothScrollTo(destination) {
     }
 }
 
-// handle section slide transitions
+/**
+ * @description handles section slide transitions
+ * @param {node} slideGroup
+ */
 function slideHandler(slideGroup) {
     if (slideGroup && slideGroup.classList.contains('hidden')) {
         let delay = 0;
