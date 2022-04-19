@@ -6,7 +6,6 @@ Author: Yaseen AlGailani
 window.addEventListener('load', init);
 
 function init() {
-
     // Mobile navigation expand/collapse functionality
     const navListToggle = document.getElementById('nav-list-toggle');
     const nav = document.getElementById('nav');
@@ -17,12 +16,14 @@ function init() {
     const allSections = document.querySelectorAll('main section, header');
     let prevScrollY = 0;
 
-    buildNav(navList);
+    buildNav();
 
     // toggle navigation list in mobile view
-    navListToggle.addEventListener('click', function () {
-        navListToggle.classList.toggle('expanded')
+    navListToggle.addEventListener('click', toggleNavList);
 
+
+    function toggleNavList() {
+        navListToggle.classList.toggle('expanded')
         if (backdrop.classList.contains('hidden')) {
             backdrop.classList.add('transition');
             navList.classList.add('transition');
@@ -38,10 +39,12 @@ function init() {
         backdrop.addEventListener('transitionend', function () {
             backdrop.classList.remove('transition');
         });
-    });
+    }
 
     // nav to appear on scrolling up
-    window.addEventListener('scroll', function () {
+    window.addEventListener('scroll', fixedNavHandler);
+
+    function fixedNavHandler() {
         if (window.scrollY < prevScrollY && window.scrollY > 50) {
             if (!nav.classList.contains('fixed')) {
                 header.style['margin-top'] = nav.clientHeight + 'px';
@@ -52,7 +55,7 @@ function init() {
             nav.classList.contains('fixed') && nav.classList.remove('fixed');
         }
         prevScrollY = scrollY;
-    });
+    }
 
     // Scroll to section  - assign an event lister to each nav item
     for (let a of navList.querySelectorAll('a')) {
@@ -72,9 +75,9 @@ function init() {
     });
 
     // trigger active section check
-    checkActiveSection();
+    findActiveSection();
     window.addEventListener('scroll', () => {
-        checkActiveSection(header, navList)
+        findActiveSection(header, navList)
     });
 
     function scrollToSection(e, scrollPos) {
@@ -87,7 +90,7 @@ function init() {
     }
 
     // find active section
-    function checkActiveSection() {
+    function findActiveSection() {
         for (let element of allSections) {
             if (isInView(element)) {
                 activeSectionHandler(element);
@@ -100,13 +103,25 @@ function init() {
 
     // kickstart slide transitions update navigation status
     function activeSectionHandler(element) {
-        allSections.forEach((section) => { section.classList.remove('active') });
-        element.classList.add('active');
+        let navItem = navList.querySelector('a[data-ref="' + element.id + '"]').parentElement;
+        
+        if (!element.classList.contains('active')) {
+            allSections.forEach((section) => {
+                section.classList.remove('active')
+            });
+            element.classList.add('active');
+        }
+        
+        if (!navItem.classList.contains('active')) {
+            navList.querySelectorAll('li').forEach((li) => {
+                li.classList.remove('active')
+            });
+            navItem.classList.add('active');
+        }
+        
         for (let child of element.querySelectorAll('.slide-right-group, .slide-left-group, .slide-up-group')) {
             slideHandler(child);
         }
-        navList.querySelectorAll('li').forEach((li) => { li.classList.remove('active') });
-        navList.querySelector('a[data-ref="' + element.id + '"]').parentElement.classList.add('active');
     }
 
     //build navigation list based on existing sections
@@ -125,8 +140,8 @@ function init() {
 function isInView(element) {
     let elemMidPoint = element.getBoundingClientRect().top + (element.clientHeight / 2);
     let html = document.documentElement;
-    return (elemMidPoint < html.clientHeight * 5 / 6 &&
-        elemMidPoint > html.clientHeight / 6) || (element.getBoundingClientRect().top <= html.clientHeight / 3 && element.getBoundingClientRect().bottom >= html.clientHeight);
+    return (elemMidPoint < html.clientHeight * 5 / 6 && elemMidPoint > html.clientHeight / 6) ||
+        (element.getBoundingClientRect().top <= html.clientHeight / 3 && element.getBoundingClientRect().bottom >= html.clientHeight);
 }
 
 function parseKebabCase(id) {
