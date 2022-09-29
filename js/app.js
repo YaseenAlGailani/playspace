@@ -24,19 +24,21 @@ function init() {
     function toggleNavList() {
         navListToggle.classList.toggle('expanded')
         if (backdrop.classList.contains('hidden')) {
+            document.body.classList.add('has-backdrop');
             backdrop.classList.add('transition');
             navList.classList.add('transition');
             backdrop.clientHeight;
             navList.classList.remove('hidden');
             backdrop.classList.remove('hidden');
         } else {
-            backdrop.classList.add('transition');
-            navList.classList.add('transition');
-            navList.classList.add('hidden');
-            backdrop.classList.add('hidden');
+          backdrop.classList.add('transition');
+          navList.classList.add('transition');
+          navList.classList.add('hidden');
+          backdrop.classList.add('hidden');
         }
         backdrop.addEventListener('transitionend', function () {
-            backdrop.classList.remove('transition');
+          backdrop.classList.remove('transition');
+          document.body.classList.remove('has-backdrop');
         });
     }
     navListToggle.addEventListener('click', toggleNavList);
