@@ -29,13 +29,13 @@ function init() {
       backdrop.clientHeight;
       navList.classList.remove("hidden");
       backdrop.classList.remove("hidden");
-      document.body.classList.add("has-backdrop");
+      nav.classList.add("fixed");
     } else {
       backdrop.classList.add("transition");
       navList.classList.add("transition");
       navList.classList.add("hidden");
       backdrop.classList.add("hidden");
-      document.body.classList.remove("has-backdrop");
+      nav.classList.remove("fixed");
     }
     backdrop.addEventListener("transitionend", function () {
       backdrop.classList.remove("transition");
@@ -43,27 +43,15 @@ function init() {
   }
   navListToggle.addEventListener("click", toggleNavList);
 
-  /**
-   * @description nav to appear on scrolling up
-   */
-  function fixedNavHandler() {
-    if (window.scrollY < prevScrollY && window.scrollY > 50) {
-      if (!nav.classList.contains("fixed")) {
-        header.style["margin-top"] = nav.clientHeight + "px";
-        nav.classList.add("fixed");
-      }
-    } else {
-      header.style["margin-top"] = null;
-      nav.classList.contains("fixed") && nav.classList.remove("fixed");
-    }
-    prevScrollY = scrollY;
-  }
-  window.addEventListener("scroll", fixedNavHandler);
+  backdrop.addEventListener("scroll", function (e) {
+    e.preventDefault();
+    e.stopPropagation()
+  });
 
   // Scroll to section  - assign an event lister to each nav item
   for (let a of navList.querySelectorAll("a")) {
     a.addEventListener("click", (e) => {
-      document.body.classList.remove("has-backdrop");
+      nav.classList.remove("fixed");
       let scrollPos =
         document.querySelector("#" + a.dataset.ref).getBoundingClientRect()
           .top +
@@ -78,7 +66,7 @@ function init() {
     smoothScrollTo(0);
   });
 
-  document.addEventListener("scroll", function () {
+  document.addEventListener("scroll", function (e) {
     backToTop.hidden = window.scrollY < document.documentElement.clientHeight;
   });
 
